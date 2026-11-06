@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>애플(Apple Inc.) 기업 분석</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root{
+    --bg:#f5f5f7;
+    --card:#ffffff;
+    --text:#1d1d1f;
+    --sub:#6e6e73;
+    --accent:#0071e3;
+    --border:#e5e5e7;
+    --good:#1f8a4c;
+    --warn:#c4361f;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0b0b0d;
+      --card:#1a1a1d;
+      --text:#f2f2f3;
+      --sub:#9a9a9e;
+      --accent:#2997ff;
+      --border:#2d2d30;
+      --good:#39d07a;
+      --warn:#ff6b52;
+    }
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    line-height:1.55;
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:40px 24px 80px;}
+  header.top{margin-bottom:32px;}
+  header.top .eyebrow{color:var(--accent);font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;}
+  header.top h1{font-size:clamp(28px,4vw,42px);margin:6px 0 10px;letter-spacing:-0.02em;}
+  header.top p.lead{color:var(--sub);font-size:16px;max-width:680px;margin:0;}
+  .meta-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:18px;font-size:13px;color:var(--sub);}
+  .meta-row span{background:var(--card);border:1px solid var(--border);padding:4px 10px;border-radius:20px;}
+
+  section{margin-top:44px;}
+  section h2{
+    font-size:22px;
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:16px;
+  }
+  section h2 .num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:28px;height:28px;border-radius:50%;
+    background:var(--accent);color:#fff;font-size:14px;font-weight:700;
+    flex-shrink:0;
+  }
+
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  @media (max-width:680px){.grid{grid-template-columns:1fr;}}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px 22px;
+  }
+  .card h3{margin:0 0 8px;font-size:15px;color:var(--sub);font-weight:600;}
+  .card p{margin:0;font-size:14.5px;}
+
+  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  @media (max-width:680px){.stat-row{grid-template-columns:repeat(2,1fr);}}
+  .stat{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:16px 14px;text-align:left;
+  }
+  .stat .label{font-size:12.5px;color:var(--sub);margin-bottom:6px;}
+  .stat .value{font-size:21px;font-weight:700;letter-spacing:-0.01em;}
+  .stat .sub{font-size:12px;color:var(--sub);margin-top:4px;}
+
+  .bars{margin-top:18px;}
+  .bar-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+  .bar-row .name{width:120px;flex-shrink:0;font-size:13.5px;color:var(--sub);}
+  .bar-track{flex:1;background:var(--border);border-radius:8px;height:14px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:8px;background:var(--accent);}
+  .bar-row .val{width:84px;text-align:right;font-size:13px;font-weight:600;flex-shrink:0;}
+
+  .chart-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 22px;margin-top:18px;}
+  .chart-card .cap{font-size:12.5px;color:var(--sub);margin:0 0 14px;}
+  .chart-card svg{width:100%;height:auto;display:block;}
+  .chart-card .pt-label{font-size:11px;fill:var(--text);font-weight:600;}
+  .chart-card .axis-label{font-size:10.5px;fill:var(--sub);}
+  .chart-card circle{cursor:pointer;}
+
+  table.data-table{width:100%;border-collapse:collapse;margin-top:16px;font-size:13px;}
+  table.data-table caption{text-align:left;font-size:12.5px;color:var(--sub);margin-bottom:8px;}
+  table.data-table th,table.data-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);}
+  table.data-table th{color:var(--sub);font-weight:600;font-size:12px;}
+
+  ul.clean{margin:0;padding:0;list-style:none;}
+  ul.clean li{
+    padding:12px 0;border-bottom:1px solid var(--border);
+    font-size:14.5px;display:flex;gap:10px;
+  }
+  ul.clean li:last-child{border-bottom:none;}
+  ul.clean li .tag{
+    flex-shrink:0;font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;
+    height:fit-content;white-space:nowrap;
+  }
+  .tag.earn{background:rgba(0,113,227,.12);color:var(--accent);}
+  .tag.prod{background:rgba(142,68,173,.14);color:#8e44ad;}
+  .tag.supply{background:rgba(31,138,76,.12);color:var(--good);}
+  .tag.mkt{background:rgba(201,162,39,.18);color:#c9a227;}
+
+  .risk{
+    border-left:3px solid var(--warn);
+    background:var(--card);
+    border-radius:0 12px 12px 0;
+    padding:14px 18px;margin-bottom:12px;
+  }
+  .risk h4{margin:0 0 4px;font-size:15px;}
+  .risk p{margin:0;font-size:14px;color:var(--sub);}
+
+  .missing{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:16px 20px;
+  }
+  .missing h4{margin:0 0 6px;font-size:14.5px;}
+  .missing p{margin:0 0 14px;font-size:13.5px;color:var(--sub);}
+  .missing p:last-child{margin-bottom:0;}
+
+  sup.c{color:var(--accent);font-weight:700;cursor:default;}
+
+  footer{
+    margin-top:56px;padding-top:20px;border-top:1px solid var(--border);
+    font-size:12.5px;color:var(--sub);
+  }
+  footer ol{padding-left:20px;margin:0 0 10px;}
+  footer ol li{margin-bottom:4px;word-break:break-all;}
+  footer a{color:var(--sub);text-decoration:underline;}
+  footer .asof{margin-top:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="eyebrow">Company Analysis</div>
+    <h1>애플 (Apple Inc.)</h1>
+    <p class="lead">2026년 11월 2일 발표된 2026 회계연도 4분기 실적에서 매출은 분기 기준 역대 최대치를 기록했지만, 메모리 반도체 가격 급등으로 다음 분기 매출총마진 가이던스는 낮아졌다. 같은 주에 신제품 5종이 출시되며 제품 쪽 모멘텀도 함께 진행 중이다.</p>
+    <div class="meta-row">
+      <span>티커: NASDAQ: AAPL</span>
+      <span>회계연도 종료: 9월</span>
+      <span>11/5 종가: $344.17</span>
+      <span>52주 범위: $243.42 ~ $354.50</span>
+    </div>
+  </header>
+
+  <!-- 1. 개요 -->
+  <section>
+    <h2><span class="num">1</span>개요</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>매출 구성 (FY2026 4분기 기준)</h3>
+        <p>iPhone이 전체 매출의 50.3%(+17.5% YoY), Services가 27.6%(+9.8% YoY)를 차지하며 두 부문이 매출의 78%가량을 담당한다.<sup class="c">[1][2]</sup></p>
+      </div>
+      <div class="card">
+        <h3>연간 규모</h3>
+        <p>FY2026(2026년 9월 마감) 연간 매출은 $478.8B로 역대 최대, 희석 EPS는 $8.98이다.<sup class="c">[1][2]</sup></p>
+      </div>
+      <div class="card">
+        <h3>시장 지위</h3>
+        <p>2026년 7월 28일 시가총액 5조 달러를 돌파하며 세계 최초로 이 기록을 세운 상장기업이 됐다. 같은 날 기준 연초 대비 주가는 +25%였다.<sup class="c">[10]</sup></p>
+      </div>
+      <div class="card">
+        <h3>지금 국면</h3>
+        <p>2026년 11월 2일 실적 발표에서 메모리 가격 상승을 이유로 차기 분기 매출총마진 가이던스를 45~46%로 제시했고, 11월 6일에는 OLED iPad mini 등 신제품 5종이 출시됐다.<sup class="c">[1][3][4]</sup></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 재무 요약 -->
+  <section>
+    <h2><span class="num">2</span>재무 요약</h2>
+
+    <div class="stat-row">
+      <div class="stat">
+        <div class="label">분기 매출 (FY26 Q4)</div>
+        <div class="value">$114.5B</div>
+        <div class="sub">전년 대비 +12%<sup class="c">[1][2]</sup></div>
+      </div>
+      <div class="stat">
+        <div class="label">분기 순이익 (FY26 Q4)</div>
+        <div class="value">$30.7B</div>
+        <div class="sub">전년 대비 +11.8%<sup class="c">[2]</sup></div>
+      </div>
+      <div class="stat">
+        <div class="label">희석 EPS (FY26 Q4)</div>
+        <div class="value">$2.10</div>
+        <div class="sub">관세 환급 $0.05 포함<sup class="c">[2]</sup></div>
+      </div>
+      <div class="stat">
+        <div class="label">차기분기 매출총마진 가이던스</div>
+        <div class="value">45~46%</div>
+        <div class="sub">메모리 가격 상승 영향<sup class="c">[3]</sup></div>
+      </div>
+    </div>
+
+    <div class="bars">
+      <div class="bar-row">
+        <div class="name">iPhone</div>
+        <div class="bar-track"><div class="bar-fill" style="width:50.3%;"></div></div>
+        <div class="val">50.3%</div>
+      </div>
+      <div class="bar-row">
+        <div class="name">Services</div>
+        <div class="bar-track"><div class="bar-fill" style="width:27.6%;"></div></div>
+        <div class="val">27.6%</div>
+      </div>
+      <div class="bar-row">
+        <div class="name">기타 (Mac·iPad·Wearables 등)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:22.1%;"></div></div>
+        <div class="val">22.1%</div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--sub);margin:4px 0 0;">FY2026 4분기 매출 비중.<sup class="c">[1][2]</sup> Mac·iPad·Wearables 세부 분할 수치는 이번 조사에 포함하지 않아 하나로 묶었다(아래 '빠진 자료' 참고).</p>
+
+    <div class="chart-card">
+      <p class="cap">AAPL 종가 추이 · 기간: 2026년 1월 20일 ~ 11월 5일 · 보도된 주요 시점 5개 지점만 표시, x축은 날짜 간격이 아닌 시점 순서로 균등 배치(일별 데이터 아님)<sup class="c">[8][9][10][11]</sup></p>
+      <svg viewBox="0 0 640 240" role="img" aria-label="AAPL 종가 추이, 2026년 1월 20일 243.42달러에서 11월 5일 344.17달러">
+        <line x1="50" y1="35.0" x2="620" y2="35.0" stroke="var(--border)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="50" y1="193.7" x2="620" y2="193.7" stroke="var(--border)" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="624" y="38" class="axis-label" text-anchor="start">$354.5</text>
+        <text x="624" y="197" class="axis-label" text-anchor="start">$243.4</text>
+
+        <polyline points="50,193.7 192.5,91.5 335,55.7 477.5,35.0 620,49.8" fill="none" stroke="var(--accent)" stroke-width="2"/>
+
+        <circle cx="50" cy="193.7" r="5" fill="var(--accent)"><title>2026-01-20: $243.42 (52주 최저)</title></circle>
+        <circle cx="192.5" cy="91.5" r="5" fill="var(--accent)"><title>2026-05-31: $314.94</title></circle>
+        <circle cx="335" cy="55.7" r="5" fill="var(--accent)"><title>2026-07-28: 약 $340 돌파, 시총 5조달러 최초 달성</title></circle>
+        <circle cx="477.5" cy="35.0" r="5" fill="var(--accent)"><title>2026-11-04: $354.50 (52주 최고)</title></circle>
+        <circle cx="620" cy="49.8" r="5" fill="var(--accent)"><title>2026-11-05: $344.17 (종가)</title></circle>
+
+        <text x="50" y="183" class="pt-label" text-anchor="middle">$243.42</text>
+        <text x="477.5" y="24" class="pt-label" text-anchor="middle">$354.50</text>
+        <text x="620" y="63" class="pt-label" text-anchor="end">$344.17</text>
+
+        <text x="50" y="222" class="axis-label" text-anchor="middle">1/20</text>
+        <text x="192.5" y="222" class="axis-label" text-anchor="middle">5/31</text>
+        <text x="335" y="222" class="axis-label" text-anchor="middle">7/28</text>
+        <text x="477.5" y="222" class="axis-label" text-anchor="middle">11/4</text>
+        <text x="620" y="222" class="axis-label" text-anchor="end">11/5</text>
+      </svg>
+
+      <table class="data-table">
+        <caption>차트의 5개 지점 (표로 보기)</caption>
+        <thead><tr><th>날짜</th><th>종가</th><th>비고</th></tr></thead>
+        <tbody>
+          <tr><td>2026-01-20</td><td>$243.42</td><td>52주 최저<sup class="c">[11]</sup></td></tr>
+          <tr><td>2026-05-31</td><td>$314.94</td><td>직전 분기 실적 발표 후 강세<sup class="c">[10]</sup></td></tr>
+          <tr><td>2026-07-28</td><td>약 $340+</td><td>사상 최고치 경신, 시총 5조달러 최초 달성(정확한 종가 아님, 보도된 근사치)<sup class="c">[10]</sup></td></tr>
+          <tr><td>2026-11-04</td><td>$354.50</td><td>52주 최고, 중간선거 이후 빅테크 랠리<sup class="c">[9][11]</sup></td></tr>
+          <tr><td>2026-11-05</td><td>$344.17</td><td>마진 가이던스 우려로 하루 전보다 하락<sup class="c">[8]</sup></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 3. 최근 뉴스 -->
+  <section>
+    <h2><span class="num">3</span>최근 뉴스</h2>
+    <ul class="clean">
+      <li><span class="tag earn">실적</span><span>2026-11-02 — FY2026 4분기 실적 발표. 매출 $114.5B(+12%), 순이익 $30.7B(+11.8%), 희석 EPS $2.10(+14%).<sup class="c">[1][2]</sup></span></li>
+      <li><span class="tag earn">가이던스</span><span>같은 발표에서 메모리(디램 등) 가격 상승을 이유로 차기 분기 매출총마진 가이던스를 45~46%로 제시, 주가는 다음 날 1.9% 하락.<sup class="c">[3]</sup></span></li>
+      <li><span class="tag supply">공급망</span><span>2026년 6월 말~9월 말 사이 제조 협력사와의 구매약정 규모가 $33B 급증. 모바일 디램 등 핵심 부품과 위탁 생산 물량을 선점하려는 목적으로 보도됨.<sup class="c">[3]</sup></span></li>
+      <li><span class="tag prod">제품</span><span>2026-11-06 — OLED iPad mini, M6 iMac, 14형 M6 MacBook Pro, 14·16형 OLED 터치스크린 MacBook Pro 등 신제품 5종 출시.<sup class="c">[4]</sup></span></li>
+      <li><span class="tag mkt">시황</span><span>2026-11-04 중간선거 이후 빅테크 랠리에 AAPL 52주 최고가($354.50) 경신, 2026-11-05 종가는 $344.17로 하루 만에 소폭 하락.<sup class="c">[8][9]</sup></span></li>
+    </ul>
+  </section>
+
+  <!-- 4. 리스크 -->
+  <section>
+    <h2><span class="num">4</span>리스크</h2>
+
+    <div class="risk">
+      <h4>메모리 반도체 가격 급등에 따른 마진 압박</h4>
+      <p>디램 등 메모리 가격이 계약가 기준 거의 두 배 수준으로 보도되는 가운데, 애플도 차기 분기 매출총마진 가이던스를 45~46%로 낮췄다. 공급망 선점을 위해 구매약정을 $33B 늘렸지만 가격 상승이 계속되면 마진 압박이 추가 분기로 이어질 수 있다.<sup class="c">[3][7]</sup></p>
+    </div>
+
+    <div class="risk">
+      <h4>규제·반독점 압박 (미국·EU·중국)</h4>
+      <p>미국 대법원 앱스토어 판결, EU 디지털시장법(DMA), 미 DOJ 소송이 동시에 앱스토어 수수료 등 생태계 수익구조를 겨냥하고 있다. 중국에서는 2026년 6월 현지 개발자 48곳이 SAMR에 앱스토어 수수료에 대한 반독점 조사를 요청했다.<sup class="c">[5][6]</sup></p>
+    </div>
+
+    <div class="risk">
+      <h4>공급망 집중·관세 리스크</h4>
+      <p>생산이 중국·대만에 집중돼 있고, 2026년 4월 기준 관세로 인한 누적 비용이 $3.3B에 달했다. 일부 분석가는 대중 관세가 최대 145%까지 오를 수 있다고 경고했다.<sup class="c">[7]</sup></p>
+    </div>
+  </section>
+
+  <!-- 5. 빠진 자료 -->
+  <section>
+    <h2><span class="num">5</span>빠진 자료</h2>
+    <div class="missing">
+      <h4>일별 주가 원자료</h4>
+      <p>위 차트는 일별 시세 원자료를 확보하지 못해 언론에 보도된 주요 시점 5개 지점만 선으로 이은 것이다. 이번 조사에서 시세 데이터 원본(csv 등)에 대한 접근이 제한되어 있었기 때문이다. 그 결과 지점 사이 구간, 특히 8~10월의 실제 등락과 저점·고점은 이 차트에 나타나지 않으며, 특정 날짜의 정확한 가격은 이 페이지만으로 알 수 없다.</p>
+      <h4>대차대조표·현금흐름표</h4>
+      <p>총자산·총부채·현금 및 현금성자산, 현금흐름표 수치는 조사 범위에 포함하지 않았다. 이번 조사를 손익 지표(매출·순이익·EPS)와 최근 이벤트 중심으로 한정했기 때문이다. 이로 인해 부채비율이나 유동성 같은 재무 건전성 측면은 이 페이지로 판단할 수 없다.</p>
+      <h4>지역별 매출 세부 내역</h4>
+      <p>미국·중국·유럽 등 지역별 매출 수치는 포함하지 않았다. 이번 조사에서 전사 및 사업부문 단위 수치만 확인됐기 때문이다. 이로 인해 중국 시장 리스크 등 지역 리스크의 정량적 크기는 이 페이지로 가늠할 수 없다.</p>
+    </div>
+  </section>
+
+  <footer>
+    <strong style="color:var(--text);">출처</strong>
+    <ol>
+      <li>[1] Apple Newsroom, "Apple reports fourth quarter results" — <a href="https://www.apple.com/newsroom/2026/11/apple-reports-fourth-quarter-results/" target="_blank" rel="noopener">apple.com/newsroom</a></li>
+      <li>[2] GuruFocus, "Apple Inc Reports Strong Q4 FY2026 Results" — <a href="https://www.gurufocus.com/news/9163152/apple-inc-reports-strong-q4-fy2026-results-revenue-surges-to-1145-billion-and-eps-reaches-210-both-beating-analysts-estimates" target="_blank" rel="noopener">gurufocus.com</a></li>
+      <li>[3] 글로벌이코노믹, "아이폰 잘 팔려도 메모리값 폭등에 휘청…애플의 역설" — <a href="https://g-enews.com/article/Global-Biz/2026/11/202611031718156022fbbec65dfb_1" target="_blank" rel="noopener">g-enews.com</a></li>
+      <li>[4] zeerawireless, "애플 11월 6일 신제품 5종: 사양과 가격 총정리" — <a href="https://zeerawireless.com/ko/blogs/news/apple-november-6-2026-new-products-specs-prices" target="_blank" rel="noopener">zeerawireless.com</a></li>
+      <li>[5] techbetweenthelines.com, "2026: The Year Apple's Strategy Faces Its Reckoning" — <a href="https://www.techbetweenthelines.com/2026-the-year-apples-strategy-faces-its-reckoning/" target="_blank" rel="noopener">techbetweenthelines.com</a></li>
+      <li>[6] revera.legal, "Apple under antitrust pressure in China: 48 developers call for SAMR investigation" — <a href="https://www.revera.legal/en/news-and-analytical-materials/apple-pod-antimonopolnym-davleniem-v-kitae-48-razrabotchikov-trebuyut-rassledovaniya-samr/" target="_blank" rel="noopener">revera.legal</a></li>
+      <li>[7] valye.com, "Apple's Q3 2026 Update Highlights Supply Chain Cost Pressures and Ecosystem Growth" — <a href="https://www.valye.com/news/aapl-company-analysis-2026-08-01-apple-s-q3-2026-update-highlights-supply-chain-cost-pressures-and-ecosystem-g-307068" target="_blank" rel="noopener">valye.com</a></li>
+      <li>[8] heygotrade, "Apple (AAPL) Stock Price: Nov 5 Close $344.17" — <a href="https://www.heygotrade.com/en/us-stock/aapl/" target="_blank" rel="noopener">heygotrade.com</a></li>
+      <li>[9] heygotrade, "Apple Stock (AAPL) Rises 5.3% as Big Tech Gains on Midterms (Nov 4)" — <a href="https://heygotrade.com/en/news/apple-aapl-stock-news-november-5-2026" target="_blank" rel="noopener">heygotrade.com</a></li>
+      <li>[10] tradingkey.com, "애플 주가 전망: 2026년까지 AAPL 400달러 돌파 가능할까?" — <a href="https://www.tradingkey.com/kr/analysis/stocks/us-stocks/262068576-us-stock-apple-aapl-price-prediction-ipad-mac-goog-nvda-amzn-meta-msft-tsla-tradingkey" target="_blank" rel="noopener">tradingkey.com</a></li>
+      <li>[11] stockanalysis.com, "Apple (AAPL) Stock Price History 1982-2026" — <a href="https://stockanalysis.com/stocks/aapl/history/" target="_blank" rel="noopener">stockanalysis.com</a></li>
+    </ol>
+    <div class="asof">작성 시각: 2026-11-06 (KST) · 자료 기준일: 주가 2026-11-05, 실적 2026-11-02</div>
+  </footer>
+
+</div>
+</body>
+</html>
